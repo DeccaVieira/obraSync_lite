@@ -20,8 +20,18 @@ async function add_manager(data, hash) {
     }
 };
 
+async function find_manager(email) {
+    try {
+        return prisma.manager.findFirst({
+            where: {email}
+        })
+    } catch (error) {
+       throw new Error(error.message); 
+    }
+}
+
 const manager_repository ={
-    add_manager, 
+    add_manager, find_manager
 }
 
 export default manager_repository;
