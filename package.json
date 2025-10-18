@@ -1,0 +1,37 @@
+{
+  "name": "obrasync_lite",
+  "version": "1.0.0",
+  "description": "Obrasync is a platform designed for managing small construction projects, ensuring team synchronization, organized workflows, and centralized documentation throughout the entire construction lifecycle.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "seed": "node prisma/seed.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeccaVieira/obraSync_lite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/DeccaVieira/obraSync_lite/issues"
+  },
+  "homepage": "https://github.com/DeccaVieira/obraSync_lite#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.17.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "joi": "^18.0.1",
+    "jsonwebtoken": "^9.0.2",
+    "Router": "^2.1.0"
+  }
+}
