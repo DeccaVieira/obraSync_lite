@@ -16,8 +16,21 @@ async function compare_password(id, password) {
     }
 }
 
+async function change_password(id, new_password) {
+
+    try {
+        return prisma.manager.update({
+where : {id: Number(id)},
+data: {password_hash: new_password},
+        })
+    } catch (error) {
+        throw new Error(error.message);
+        
+    }
+}
+
 const auth_repository = {
-    compare_password,
+    compare_password, change_password,
 };
 
 export default auth_repository;

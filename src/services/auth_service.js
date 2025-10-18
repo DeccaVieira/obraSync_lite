@@ -36,9 +36,38 @@ async function compare_password(email, password) {
     }
 }
 
+async function change_password(email, old_password, new_password) {
+   if (!email, !old_password, !new_password) {
+    throw new Error("Dados inválidos!");
+};
+
+try {
+
+ const manager_exists = await manager_repository.find_manager(email);
+        if (!manager_exists) {
+           throw new Error("Email não cadastrado!");
+        };
+
+const password_ok = await bcrypt.compare(old_password, manager_exists.password_hash);
+
+if (password_ok) {
+          const pass = new_password;
+          const saltRounds = 11; 
+          const hash = await bcrypt.hash(pass, saltRounds);
+ await auth_repository.change_password(manager_exists.id, hash)
+ return
+} else {
+throw new Error("Usuário ou senha incorretos");
+};
+
+} catch (error) {
+    throw new Error(error.message);
+} 
+}
+
 
 const auth_service = {
-    compare_password, 
+    compare_password, change_password
 }
 
 export default auth_service;
