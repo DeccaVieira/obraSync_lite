@@ -27,3 +27,15 @@ model manager {
   password_hash String
 }
 
+model employee {
+  id              Int            @id @default(autoincrement())
+  name            String
+  date_of_birth   DateTime       @db.Date
+  rg              String
+  cpf             String         @unique
+  drivers_license Boolean
+  admission_date  DateTime       @db.Date
+  password_hash   String
+  occupation      String
+  active          Boolean        @default(true)
+}
