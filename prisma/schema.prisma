@@ -14,28 +14,60 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model manager {
-  id    Int     @id @default(autoincrement())
-  name  String
-  email String  @unique
-  cpf   String  @unique
-  phone String  @unique
-  role  String
-  cnpj  String?  
+model Manager {
+  id            Int       @id @default(autoincrement())
+  name          String
+  email         String    @unique
+  cpf           String    @unique
+  phone         String    @unique
+  role          String
+  cnpj          String?
   company_name  String?
-  is_active  Boolean @default(false)
+  employees     Employee[] @relation("ManagerEmployees")
+  customers     Customer[] @relation("ManagerCustomers")
+  projects      Project[]  @relation("ManagerProjects")
+  is_active     Boolean   @default(false)
   password_hash String
 }
 
-model employee {
-  id              Int            @id @default(autoincrement())
+model Employee {
+  id              Int       @id @default(autoincrement())
   name            String
-  date_of_birth   DateTime       @db.Date
+  date_of_birth   DateTime  @db.Date
   rg              String
-  cpf             String         @unique
+  cpf             String    @unique
   drivers_license Boolean
-  admission_date  DateTime       @db.Date
+  admission_date  DateTime  @db.Date
   password_hash   String
   occupation      String
-  active          Boolean        @default(true)
+  manager_id      Int
+  manager         Manager   @relation("ManagerEmployees", fields: [manager_id], references: [id])
+  active          Boolean   @default(true)
+}
+
+model Customer {
+  id              Int       @id @default(autoincrement())
+  name            String
+  cpf             String    @unique
+  email           String
+  phone           String
+  client_since    DateTime  @db.Date
+  cnpj            String?
+  company_name    String?
+  password_hash   String
+  manager_id      Int
+  manager         Manager   @relation("ManagerCustomers", fields: [manager_id], references: [id])
+  active          Boolean   @default(true)
+}
+
+model Project {
+  id                     Int       @id @default(autoincrement())
+  address                String
+  contracted_services    Json?     // array/objeto JSON com serviços contratados
+  material_estimate      Json?     // array/objeto JSON com estimativa de materiais
+  estimated_start_date   DateTime  @db.Date
+  estimated_end_date     DateTime  @db.Date
+  manager_id             Int
+  manager                Manager   @relation("ManagerProjects", fields: [manager_id], references: [id])
+  active                 Boolean   @default(true)
 }

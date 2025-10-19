@@ -1,9 +1,11 @@
 import prisma from "../database/prismaClient.js";
 
 
-async function add_employee(data, hash) {
+async function add_employee(manager_id, data, hash) {
+    console.log(manager_id);
     
   return prisma.employee.create({
+   
     data: {
       name: data.name,
       date_of_birth: new Date(data.date_of_birth),
@@ -12,7 +14,8 @@ async function add_employee(data, hash) {
       drivers_license: data.drivers_license,
       occupation: data.occupation,
       admission_date: data.admission_date,
-      password_hash: hash
+      password_hash: hash,
+      manager_id: Number(manager_id)
     },
 })
 };
@@ -23,9 +26,18 @@ async function find_employee(cpf) {
   });
 }
 
+async function get_employee_by_manager(manager_id) {
+  
+  return prisma.employee.findMany({
+    where : {
+      manager_id: Number(manager_id)
+    }
+  })
+}
+
 
 const employee_repository = {
-    add_employee, find_employee
+    add_employee, find_employee, get_employee_by_manager
 }
 
 export default employee_repository;
