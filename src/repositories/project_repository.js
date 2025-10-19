@@ -30,7 +30,22 @@ async function get_project_by_customer(customer_id, manager_id) {
             where: {
                 customer_id: Number(customer_id),
                 manager_id: Number(manager_id)
-            }
+            },
+      include: {
+        customer: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+            cpf: true,
+            cnpj: true,
+            company_name: true
+          }
+        }
+      },
+      orderBy: {
+        id: 'desc' // mostra o projeto mais recente primeiro
+      }
         })
     } catch (error) {
         throw new Error(error);
@@ -39,16 +54,33 @@ async function get_project_by_customer(customer_id, manager_id) {
 }
 
 async function get_project_by_manager(manager_id) {
-    try {
-        return prisma.project.findMany({
-            where: {
-                manager_id: Number(manager_id)
-            }
-        })
-    } catch (error) {
-        throw new Error(error);
-        
-    }
+  try {
+    const projects = await prisma.project.findMany({
+      where: {
+        manager_id: Number(manager_id)
+      },
+      include: {
+        customer: {
+          select: {
+            name: true,
+            email: true,
+            phone: true,
+            cpf: true,
+            cnpj: true,
+            company_name: true
+          }
+        }
+      },
+      orderBy: {
+        id: 'desc' // mostra o projeto mais recente primeiro
+      }
+    });
+
+    return projects;
+  } catch (error) {
+    console.error("Erro ao buscar projetos do gerente:", error);
+    throw new Error("Erro interno ao buscar projetos do gerente.");
+  }
 }
 
 const project_repository = {
