@@ -27,12 +27,16 @@ async function find_employee(cpf) {
 }
 
 async function get_employee_by_manager(manager_id) {
-  
-  return prisma.employee.findMany({
-    where : {
-      manager_id: Number(manager_id)
-    }
-  })
+  try {
+        return prisma.employee.findMany({
+      where : {
+        manager_id: Number(manager_id)
+      }
+    })
+  } catch (error) {
+    throw new Error(error);
+    
+  }
 }
 
 

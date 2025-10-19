@@ -24,11 +24,13 @@ async function add_customer(manager_id, data, hash) {
     }
 }
 
-async function find_customer(manager_id, cpf) {
+async function find_customer(manager_id, customer_id) {
+    console.log(manager_id, customer_id, "rep");
+    
     try {
         return prisma.customer.findFirst({
             where: {
-                cpf: cpf, 
+                id: Number(customer_id), 
                 manager_id: Number(manager_id)
             }
         })

@@ -15,18 +15,18 @@ datasource db {
 }
 
 model Manager {
-  id            Int       @id @default(autoincrement())
+  id            Int         @id @default(autoincrement())
   name          String
-  email         String    @unique
-  cpf           String    @unique
-  phone         String    @unique
+  email         String      @unique
+  cpf           String      @unique
+  phone         String      @unique
   role          String
   cnpj          String?
   company_name  String?
-  employees     Employee[] @relation("ManagerEmployees")
-  customers     Customer[] @relation("ManagerCustomers")
-  projects      Project[]  @relation("ManagerProjects")
-  is_active     Boolean   @default(false)
+  employees     Employee[]  @relation("ManagerEmployees")
+  customers     Customer[]  @relation("ManagerCustomers")
+  projects      Project[]   @relation("ManagerProjects")
+  is_active     Boolean     @default(false)
   password_hash String
 }
 
@@ -46,28 +46,35 @@ model Employee {
 }
 
 model Customer {
-  id              Int       @id @default(autoincrement())
+  id              Int        @id @default(autoincrement())
   name            String
-  cpf             String    
+  cpf             String
   email           String
   phone           String
-  client_since    DateTime  @db.Date
+  client_since    DateTime   @db.Date
   cnpj            String?
   company_name    String?
   password_hash   String
   manager_id      Int
-  manager         Manager   @relation("ManagerCustomers", fields: [manager_id], references: [id])
-  active          Boolean   @default(true)
+  projects        Project[]  @relation("CustomerProjects")
+  manager         Manager    @relation("ManagerCustomers", fields: [manager_id], references: [id])
+  active          Boolean    @default(true)
 }
 
 model Project {
-  id                     Int       @id @default(autoincrement())
+  id                     Int        @id @default(autoincrement())
   address                String
-  contracted_services    Json?     // array/objeto JSON com serviços contratados
-  material_estimate      Json?     // array/objeto JSON com estimativa de materiais
-  estimated_start_date   DateTime  @db.Date
-  estimated_end_date     DateTime  @db.Date
+  contracted_services    Json?      // array/objeto JSON com serviços contratados
+  material_estimate      Json?      // array/objeto JSON com estimativa de materiais
+  estimated_start_date   DateTime   @db.Date
+  estimated_end_date     DateTime   @db.Date
   manager_id             Int
-  manager                Manager   @relation("ManagerProjects", fields: [manager_id], references: [id])
-  active                 Boolean   @default(true)
+  estimated_cost_of_materials Float
+  total_estimated_cost_of_services  Float
+  total_cost  Float
+  manager                Manager    @relation("ManagerProjects", fields: [manager_id], references: [id])
+  customer_id            Int
+  customer               Customer   @relation("CustomerProjects", fields: [customer_id], references: [id])
+  active                 Boolean    @default(true)
+
 }
