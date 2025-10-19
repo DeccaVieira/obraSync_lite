@@ -48,7 +48,7 @@ model Employee {
 model Customer {
   id              Int       @id @default(autoincrement())
   name            String
-  cpf             String    @unique
+  cpf             String    
   email           String
   phone           String
   client_since    DateTime  @db.Date
